@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+
 class Correlation:
     def __init__(self, dataset):
         self.dataset = dataset
@@ -19,4 +20,3 @@ class Correlation:
         plt.title(f"Histogram Comparison for {column}")
         plt.legend()
         plt.show()
-
