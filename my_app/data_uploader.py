@@ -5,7 +5,7 @@ class DataUploader:
     def __init__(self):
         self.original_dataset = None
 
-    def upload_file(self, file_path):
+    def upload_file(self):
         file_path = input("Enter the file path of the CSV file: ")
         try:
             self.original_dataset = pd.read_csv(file_path)
@@ -20,4 +20,5 @@ class DataUploader:
             print("No dataset uploaded. Please upload a file.")
         else:
             print("Dataset is valid.")
+
 
