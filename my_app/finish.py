@@ -6,6 +6,7 @@ from email import encoders
 import getpass
 import os
 
+
 class Finish:
     def __init__(self, synthetic_dataset, scorecard_results):
         self.synthetic_dataset = synthetic_dataset

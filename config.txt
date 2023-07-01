@@ -1,0 +1,6 @@
+# Data Uploader Configuration
+DATA_DIRECTORY=/path/to/data/directory
+
+# Finish Module Configuration
+SENDER_EMAIL=mattsantos541@gmail.com
+SENDER_PASSWORD=your-email-password
