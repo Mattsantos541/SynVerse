@@ -8,6 +8,7 @@ from my_app.data_generator import DataGenerator
 from my_app.Scorecard import Scorecard
 from my_app.finish import Finish
 
+
 def main():
     # Step 1: Upload the CSV file
     uploader = DataUploader()
@@ -18,9 +19,14 @@ def main():
     if uploader.original_dataset is not None:
         processed_data = preprocess_dataset(uploader.original_dataset)
 
-        # Step 3: Perform correlation analysis
-        correlation = Correlation(processed_data)
-        correlation.generate_heatmap()
+        # Proceed only if the preprocessing step is successful
+        if processed_data is not None:
+            # Print the first 10 rows of the preprocessed dataset
+            print("First 10 rows of the preprocessed dataset:")
+            print(processed_data.head(10))
+            # Step 3: Perform correlation analysis
+            correlation = Correlation(processed_data)
+            correlation.generate_heatmap()
 
         # Step 4: Generate synthetic data
         generator = DataGenerator(processed_data)
@@ -43,6 +49,7 @@ def main():
             receiver_email = input("Enter the recipient's email address: ")
             subject = "Synthetic Dataset for the Original CSV"
             body = "This is your synthetic dataset for the original CSV."
+
 
 if __name__ == '__main__':
     main()
