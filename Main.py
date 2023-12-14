@@ -54,5 +54,3 @@ def main():
 if __name__ == '__main__':
     main()
 
-    # todo test with basic csv
-    # todo Stat metrics, Kolmogorov_Smirnov Test, Jensen-Shannon Divergence, Wasserstein Distance
