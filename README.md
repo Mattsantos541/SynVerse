@@ -14,5 +14,7 @@ The Synthetic Data Web Application is a tool that generates synthetic datasets t
 - Export synthetic datasets in various formats.
 
 
+data_uploader, preprocessing, correlation, data_generator, scorecard, and finish.
+
 
 
