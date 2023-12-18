@@ -5,7 +5,7 @@ from my_app.data_uploader import DataUploader
 from my_app.preprocessing import preprocess_dataset
 from my_app.correlation import Correlation
 from my_app.data_generator import DataGenerator
-from my_app.Scorecard import Scorecard
+from my_app.scorecard import Scorecard
 from my_app.finish import Finish
 
 
