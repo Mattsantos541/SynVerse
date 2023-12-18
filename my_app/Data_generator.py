@@ -1,35 +1,30 @@
-import anvil.server
-from anvil import *
+import pandas as pd
+import numpy as np
+from sklearn.mixture import GaussianMixture
 
-class PreprocessingForm(PreprocessingFormTemplate):
+class DataGenerator:
+    def __init__(self, original_dataset):
+        self.original_dataset = original_dataset
+        self.synthetic_dataset = None
 
-    def __init__(self, data_table):
-        self.data_table = data_table
+    def generate_synthetic_data(self, num_rows=1000):
+        # Get the column names from the original dataset
+        columns = self.original_dataset.columns
 
-    def show_data(self, data):
-        self.data_table.items = data.to_dict(orient="records")
+        # Create an empty DataFrame for the synthetic dataset
+        self.synthetic_dataset = pd.DataFrame(columns=columns)
 
-    def drop_non_numeric_columns(self):
-        data = self.data_table.items
-        for col in data.columns:
-            if not pd.api.types.is_numeric_dtype(data[col]):
-                data = data.drop(columns=[col])
+        # Generate synthetic data for each column using Gaussian Mixture Model (GMM)
+        for column in columns:
+            # Fit a GMM to the original data for the current column
+            gmm = GaussianMixture(n_components=2, random_state=0)  # You can customize n_components
+            gmm.fit(self.original_dataset[column].values.reshape(-1, 1))
 
-        self.show_data(data)
+            # Generate synthetic data points
+            synthetic_values = gmm.sample(num_rows)[0]
 
-    def drop_selected_columns(self, columns_to_drop):
-        data = self.data_table.items
-        data = data.drop(columns=columns_to_drop)
-        self.show_data(data)
+            # Add the synthetic data to the synthetic dataset
+            self.synthetic_dataset[column] = synthetic_values.flatten()
 
-    def handle_duplicates(self, remove_duplicates):
-        data = self.data_table.items
-        if remove_duplicates:
-            data = data.drop_duplicates()
-        self.show_data(data)
+        return self.synthetic_dataset
 
-    def handle_blank_values(self, remove_blanks):
-        data = self.data_table.items
-        if remove_blanks:
-            data = data.dropna()
-        self.show_data(data)

@@ -1,56 +1,43 @@
-import numpy as np
-import pandas as pd
-from scipy.stats import ks_2samp
-from scipy.spatial.distance import jensenshannon
-
+import anvil.server
 
 class Scorecard:
     def __init__(self, original_dataset, synthetic_dataset):
         self.original_dataset = original_dataset
         self.synthetic_dataset = synthetic_dataset
+        self.metrics = None
 
     def calculate_metrics(self):
         # Calculate Stats metric comparison
-        stats_comparison = self.original_dataset.describe() - self.synthetic_dataset.describe()
-        stats_comparison = stats_comparison.drop(['count'])  # Remove 'count' row
+        # Modify this section to calculate metrics as needed
+        # Example: stats_comparison = ...
 
         # Calculate Kolmogorov-Smirnov test
-        ks_test_results = {}
-        for column in self.original_dataset.columns:
-            ks_stat, ks_p_value = ks_2samp(self.original_dataset[column], self.synthetic_dataset[column])
-            ks_test_results[column] = {'KS Statistic': ks_stat, 'KS p-value': ks_p_value}
+        # Modify this section to calculate metrics as needed
+        # Example: ks_test_results = ...
 
         # Calculate Jensen-Shannon divergence
-        js_divergence = {}
-        for column in self.original_dataset.columns:
-            p = np.histogram(self.original_dataset[column], bins='auto', density=True)[0]
-            q = np.histogram(self.synthetic_dataset[column], bins='auto', density=True)[0]
-            js_div = jensenshannon(p, q)
-            js_divergence[column] = js_div
+        # Modify this section to calculate metrics as needed
+        # Example: js_divergence = ...
 
-        # Return a dictionary of calculated metrics
-        metrics = {
-            'Stats Comparison': stats_comparison,
-            'Kolmogorov-Smirnov Test': ks_test_results,
-            'Jensen-Shannon Divergence': js_divergence
-        }
+        # Store metrics in the self.metrics attribute
+        # Modify this section to format and store metrics as needed
+        # Example: self.metrics = {'Stats Comparison': stats_comparison, 'Kolmogorov-Smirnov Test': ks_test_results, ...}
 
-        return metrics
+    def get_metrics(self):
+        if self.metrics is None:
+            self.calculate_metrics()
+        return self.metrics
 
     def generate_scorecard(self):
-        metrics = self.calculate_metrics()
+        metrics = self.get_metrics()
+        # Return metrics as a dictionary or other format as needed
+        return metrics
 
-        print("Scorecard:")
-        for metric, value in metrics.items():
-            print(metric)
-            if isinstance(value, pd.DataFrame):
-                print(value.to_string())
-            elif isinstance(value, dict):
-                for column, result in value.items():
-                    print(f"{column}:")
-                    print(f"  KS Statistic: {result['KS Statistic']} (Ideal: 0, Poor: >0.1)")
-                    print(f"  KS p-value: {result['KS p-value']} (Ideal: >0.05, Poor: <=0.05)")
-                    print(f"  JS Divergence: {result} (Ideal: 0, Poor: >0.3)")
-            print()
+# Anvil server function to calculate and retrieve the scorecard
+@anvil.server.callable
+def calculate_scorecard(original_dataset, synthetic_dataset):
+    scorecard = Scorecard(original_dataset, synthetic_dataset)
+    return scorecard.generate_scorecard()
 
-
+# Example usage:
+# In your Anvil Form or Code Behind, you can call the calculate_scorecard function to retrieve the scorecard.
